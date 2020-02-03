@@ -4,7 +4,7 @@
 //
 //  Created by Nathan Racklyeft on 3/8/16.
 //  Copyright © 2016 Nathan Racklyeft. All rights reserved.
-//
+//  Test commit
 
 import Foundation
 import HealthKit
