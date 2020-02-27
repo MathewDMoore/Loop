@@ -17,9 +17,17 @@ extension Bundle {
     var bundleDisplayName: String {
         return object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
     }
+    
+    var featureSpecifier: String? {
+        return object(forInfoDictionaryKey: "com.loopkit.Loop.featureSpecifier") as? String
+    }
 
     var localizedNameAndVersion: String {
-        return String(format: NSLocalizedString("%1$@ v%2$@", comment: "The format string for the app name and version number. (1: bundle name)(2: bundle version)"), bundleDisplayName, shortVersionString)
+        var displayName = bundleDisplayName
+        if let featureSpecifier = featureSpecifier {
+            displayName += " (\(featureSpecifier))"
+        }
+        return String(format: NSLocalizedString("%1$@ v%2$@", comment: "The format string for the app name and version number. (1: bundle name)(2: bundle version)"), displayName, shortVersionString)
     }
     
     private var mainAppBundleIdentifier: String? {
@@ -30,11 +38,35 @@ extension Bundle {
         return object(forInfoDictionaryKey: "AppGroupIdentifier") as! String
     }
 
+    var isAppExtension: Bool {
+        return bundleURL.pathExtension == "appex"
+    }
+
     var mainAppUrl: URL? {
         if let mainAppBundleIdentifier = mainAppBundleIdentifier {
             return URL(string: "\(mainAppBundleIdentifier)://")
         } else {
             return nil
         }
+    }
+    
+    var gitRevision: String? {
+        return object(forInfoDictionaryKey: "com-loopkit-Loop-git-revision") as? String
+    }
+    
+    var gitBranch: String? {
+        return object(forInfoDictionaryKey: "com-loopkit-Loop-git-branch") as? String
+    }
+    
+    var sourceRoot: String? {
+        return object(forInfoDictionaryKey: "com-loopkit-Loop-srcroot") as? String
+    }
+    
+    var buildDateString: String? {
+        return object(forInfoDictionaryKey: "com-loopkit-Loop-build-date") as? String
+    }
+
+    var xcodeVersion: String? {
+        return object(forInfoDictionaryKey: "com-loopkit-Loop-xcode-version") as? String
     }
 }
